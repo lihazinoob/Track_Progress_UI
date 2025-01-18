@@ -119,23 +119,17 @@ We welcome contributions from the community! To contribute:
 
 ---
 
-## 🛡️ License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
 ## 👥 Authors
-- **Your Name** - [GitHub](https://github.com/yourusername)
+- **Your Name** - [GitHub](https://github.com/lihazinoob)
 - Contributions are welcome from anyone!
 
 ---
 
-## 📷 Screenshots
-Add screenshots of your application here to showcase its features.
+
 
 ---
 
 ## 📫 Contact
-For any inquiries or issues, please open an issue on GitHub or contact us at your.email@example.com.
+For any inquiries or issues, please open an issue on GitHub or contact us at lihazinaveed@gmail.com.
 
 
