@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import cn from "../utils/cn.js";
 import { useMediaQuery } from "@uidotdev/usehooks";
 
-const Layout = () => {
+const DashBoardLayout = () => {
   const isDesktopDevice = useMediaQuery("(min-width: 768px)");
   const [collapsed, setCollapsed] = useState(!isDesktopDevice);
 
@@ -44,4 +44,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default DashBoardLayout;
