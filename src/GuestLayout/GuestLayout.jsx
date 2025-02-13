@@ -1,17 +1,17 @@
 import React from 'react'
 import { useUserInfoContext } from '../context/user_info_context'
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 const GuestLayout = () => {
   const {token} = useUserInfoContext();
   if(token)
   {
-    
+    return <Navigate to="/dashboard"/>
   }
   
 
   return (
     <div>
-      This is Guest Layout
+      
       <Outlet/>
     </div>
   )
