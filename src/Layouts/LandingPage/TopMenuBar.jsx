@@ -50,9 +50,7 @@ const TopMenuBar = () => {
                 </div>
             </nav>
 
-            <div>
-                {/* Here I will try to make a carousel design to show various features of my website */}
-            </div>
+            
         </div>
     );
 };
