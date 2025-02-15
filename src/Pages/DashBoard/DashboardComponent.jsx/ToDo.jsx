@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Plus } from "lucide-react";
-import cn from "../../../utils/cn";
 import PopUpToDo from "./popUpToDo";
+import ViewTaskPopUp from "./ViewTaskPopUp"; // New pop-up for viewing task details
 
 const ToDo = () => {
     const tasks = [
@@ -40,13 +40,21 @@ const ToDo = () => {
         },
     ];
 
-    const [isPopUpOpen, setIsPopUpOpen] = React.useState(false);
+    const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+    const [selectedTask, setSelectedTask] = useState(null);
 
     const openPopUp = () => setIsPopUpOpen(true);
     const closePopUp = () => setIsPopUpOpen(false);
 
     const handleSaveTask = (todoInfo) => {
         closePopUp();
+    };
+
+    const [isViewTaskOpen, setIsViewTaskOpen] = useState(false);
+
+    const handleViewTask = (task) => {
+        setSelectedTask(task);
+        setIsViewTaskOpen(true);
     };
 
     const getStatusBadge = (status) => (
@@ -80,67 +88,48 @@ const ToDo = () => {
                         <table className="w-full min-w-[600px]">
                             <thead>
                                 <tr className="border-b text-left dark:border-slate-700">
-                                    <th className="px-1 py-1 sm:px-4 sm:py-3">Assigned By</th>
-                                    <th className="px-1 py-1 sm:px-4 sm:py-3">Assigned To</th>
-                                    <th className="px-1 py-1 sm:px-4 sm:py-3">Title</th>
-                                    <th className="px-1 py-1 sm:px-4 sm:py-3">Description</th>
-                                    <th className="px-1 py-1 sm:px-4 sm:py-3">Due Date</th>
-                                    <th className="px-1 py-1 sm:px-4 sm:py-3">Status</th>
+                                    <th className="px-4 py-3">Assigned By</th>
+                                    <th className="px-4 py-3">Assigned To</th>
+                                    <th className="px-4 py-3">Title</th>
+                                    <th className="px-4 py-3">Description</th>
+                                    <th className="px-4 py-3">Due Date</th>
+                                    <th className="px-4 py-3">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {tasks.map((task) => (
-                                    <tr key={task.id} className="border-b hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">
-                                        <td className="px-1 py-1 sm:px-4 sm:py-3">
+                                    <tr key={task.id} className="border-b hover:bg-slate-700 dark:border-slate-800">
+                                        <td className="px-4 py-3">
                                             <div className="flex items-center gap-2">
-                                                <img src={task.assigned_by_image} alt={task.assigned_by} className="h-6 w-6 rounded-full sm:h-8 sm:w-8" />
-                                                <span className="text-sm sm:text-base">{task.assigned_by}</span>
+                                                <img src={task.assigned_by_image} alt={task.assigned_by} className="h-8 w-8 rounded-full" />
+                                                {task.assigned_by}
                                             </div>
                                         </td>
-                                        <td className="px-1 py-1 sm:px-4 sm:py-3">
+                                        <td className="px-4 py-3">
                                             <div className="flex items-center gap-2">
-                                                <img src={task.assigned_to_image} alt={task.assigned_to} className="h-6 w-6 rounded-full sm:h-8 sm:w-8" />
-                                                <span className="text-sm sm:text-base">{task.assigned_to}</span>
+                                                <img src={task.assigned_to_image} alt={task.assigned_to} className="h-8 w-8 rounded-full" />
+                                                {task.assigned_to}
                                             </div>
                                         </td>
-                                        <td className="px-1 py-1 font-medium sm:px-4 sm:py-3">
-                                            <span className="text-sm sm:text-base">{task.title}</span>
+                                        <td
+                                            className="px-4 py-3 font-medium  cursor-pointer "
+                                            onClick={() => handleViewTask(task)}
+                                        >
+                                            {task.title}
                                         </td>
-                                        <td className="px-1 py-1 text-slate-600 dark:text-slate-400 sm:px-4 sm:py-3">
-                                            <span className="text-sm sm:text-base">{task.description || "-"}</span>
-                                        </td>
-                                        <td className="px-1 py-1 sm:px-4 sm:py-3">
-                                            <span className="text-sm sm:text-base">{task.due_date}</span>
-                                        </td>
-                                        <td className="px-1 py-1 sm:px-4 sm:py-3">{getStatusBadge(task.status)}</td>
+                                        <td className="px-4 py-3">{task.description || "-"}</td>
+                                        <td className="px-4 py-3">{task.due_date}</td>
+                                        <td className="px-4 py-3">{getStatusBadge(task.status)}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
 
-                    {/* Stacked Layout for Mobile */}
-                    <div className="block sm:hidden">
-                        {tasks.map((task) => (
-                            <div key={task.id} className="border rounded-lg py-4 mb-2 bg-white shadow-sm dark:bg-slate-800">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <img src={task.assigned_by_image} alt={task.assigned_by} className="h-6 w-6 rounded-full" />
-                                    <span className="text-sm font-medium">{task.assigned_by}</span>
-                                    <span className="text-xs text-gray-500">→</span>
-                                    <img src={task.assigned_to_image} alt={task.assigned_to} className="h-6 w-6 rounded-full" />
-                                    <span className="text-sm font-medium">{task.assigned_to}</span>
-                                </div>
-                                <p className="text-sm font-semibold">{task.title}</p>
-                                <p className="text-xs text-gray-600 dark:text-gray-400">{task.description || "-"}</p>
-                                <div className="flex justify-between items-center mt-2">
-                                    <span className="text-xs text-gray-500">Due: {task.due_date}</span>
-                                    {getStatusBadge(task.status)}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
                     <PopUpToDo isOpen={isPopUpOpen} onClose={closePopUp} onSave={handleSaveTask} />
+
+                    {/* View Task Modal */}
+                    {isViewTaskOpen && <ViewTaskPopUp task={selectedTask} onClose={() => setIsViewTaskOpen(false)} />}
                 </div>
             </div>
         </div>
