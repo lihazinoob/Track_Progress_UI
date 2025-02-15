@@ -35,17 +35,18 @@ const LandingPageBody = () => {
                     {LandingPageBodyCarouselItems.map((item) => (
                         <div
                             key={item.id}
-                            className="min-w-full flex-shrink-0"
+                            className="min-w-full flex-shrink-0 "
                         >
+                          <div className="bg-white p-6 dark:bg-slate-700">
+                                <h3 className="mb-2 text-xl font-semibold">{item.title}</h3>
+                                <p className="text-slate-600 dark:text-slate-300">{item.description}</p>
+                            </div>
                             <img
                                 src={item.image}
                                 alt={item.title}
                                 className="h-64 w-full object-cover"
                             />
-                            <div className="bg-white p-6 dark:bg-slate-800">
-                                <h3 className="mb-2 text-xl font-semibold">{item.title}</h3>
-                                <p className="text-slate-600 dark:text-slate-300">{item.description}</p>
-                            </div>
+                            
                         </div>
                     ))}
                 </div>

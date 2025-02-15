@@ -7,9 +7,7 @@ const DashBoardPage = () => {
             <div className="flex-1">
                 <ToDo />
             </div>
-            <div className="flex-1">
-                <ToDo />
-            </div>
+            
         </div>
     );
 };
