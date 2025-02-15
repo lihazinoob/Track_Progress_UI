@@ -3,6 +3,10 @@ import { X } from "lucide-react";
 import { TrendingDown } from "lucide-react";
 import { UserSearch ,User,CalendarDays } from "lucide-react";
 const ViewTaskPopUp = ({ task, onClose }) => {
+    // State to save which tab is active
+    const [activeTab,setActiveTab] = React.useState("description");
+
+    // Function to get the Status Badge
     const getStatusBadge = (status) => (
         <span className={`rounded-full px-2 py-1 text-xs ${status ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
             {status ? "Completed" : "Pending"}
@@ -49,15 +53,7 @@ const ViewTaskPopUp = ({ task, onClose }) => {
                         {task.assigned_to}
                         {/* <strong>Title:</strong> {task.title} */}
                     </div>
-                    <div className="flex gap-4 mt-2">
-                        <div className="flex gap-2">
-                            <UserSearch size={22} />
-                            <span className="font-semibold">Description:</span>
-                        </div>
-
-                        {task.description}
-                        {/* <strong>Title:</strong> {task.title} */}
-                    </div>
+                    
                     <div className="flex gap-4 mt-2">
                         <div className="flex gap-2">
                             <CalendarDays size={22} />
@@ -67,7 +63,44 @@ const ViewTaskPopUp = ({ task, onClose }) => {
                         {task.due_date}
                         {/* <strong>Title:</strong> {task.title} */}
                     </div>
-                    <p></p>
+
+                    {/* Tabs Section */}
+                    <div className="mt-4">
+                        <div className="flex border-b">
+                            <button 
+                                className={`w-1/2 py-2 ${activeTab === "description" ? "border-b-2 dark:border-slate-300 border-slate-700 dark:text-amber-50 text-slate-700 font-semibold" : "text-gray-600"}`}
+                                onClick={() => setActiveTab("description")}
+                            >
+                                Description
+                            </button>
+                            <button 
+                                className={`w-1/2 py-2 ${activeTab === "subtasks" ? "border-b-2 border-slate-300 text-amber-50 font-semibold" : "text-gray-600"}`}
+                                onClick={() => setActiveTab("subtasks")}
+                            >
+                                Subtasks
+                            </button>
+                        </div>
+
+                        {/* Content Based on Active Tab */}
+                        <div className="mt-4">
+                            {activeTab === "description" ? (
+                                <p className="text-gray-700 dark:text-gray-300">{task.description || "No description available."}</p>
+                            ) : (
+                                <ul className="list-disc pl-5">
+                                    {task.subtasks && task.subtasks.length > 0 ? (
+                                        task.subtasks.map((subtask, index) => (
+                                            <li key={index} className="text-gray-700 dark:text-gray-300">{subtask}</li>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-500">No subtasks available.</p>
+                                    )}
+                                </ul>
+                            )}
+                        </div>
+                    </div>
+
+
+                    
                 </div>
             </div>
         </div>
