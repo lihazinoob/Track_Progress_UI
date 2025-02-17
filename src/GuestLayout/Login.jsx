@@ -10,20 +10,23 @@ const Login = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
     // Using User Info Context to set TOKEN and USER
-    const {setUser,setToken} = useUserInfoContext();
+    const { setUser, setToken } = useUserInfoContext();
 
-
-    // Defining a error by STATE
+    // Defining errors by STATE
     const [errors, setErrors] = useState({
-        emailRef: "",
-        passwordRef: "",
+        email: "",
+        password: "",
     });
 
     const handleLoginCredential = (event) => {
-        // console.log(emailRef.current.value, passwordRef.current.value);
         event.preventDefault();
         const emailValue = emailRef.current.value;
         const passwordValue = passwordRef.current.value;
+
+        // Reset errors
+        setErrors({ email: "", password: "" });
+
+        // Validate email
         if (!emailValue) {
             setErrors((prev) => ({
                 ...prev,
@@ -33,34 +36,35 @@ const Login = () => {
             return;
         }
 
+        // Validate password
         if (!passwordValue) {
             setErrors((prev) => ({
                 ...prev,
-
+                password: "Password is required.",
             }));
             passwordRef.current.focus();
             return;
         }
 
-        const loginCredentialData = 
-        {
-            email:emailValue,
-            password:passwordValue
-        }
-        
-        // Using axiosClient to send data from the client side to server side
+        // Prepare login credentials
+        const loginCredentialData = {
+            email: emailValue,
+            password: passwordValue,
+        };
 
-        axiosClient.post("/login",loginCredentialData).then((response) =>
-        {
-            console.log(response.data);           
-            setToken(response.data.token);
-            setUser(response.data.user);
-        }).catch((error) =>{
-            if(error.response)
-            {
-                console.log(error.response);
-            }
-        });
+        // Send login request
+        axiosClient
+            .post("/login", loginCredentialData)
+            .then((response) => {
+                console.log(response.data);
+                setToken(response.data.token);
+                setUser(response.data.user);
+            })
+            .catch((error) => {
+                if (error.response) {
+                    console.log(error.response);
+                }
+            });
     };
 
     return (
@@ -73,7 +77,6 @@ const Login = () => {
                         50% { border-color: #00bfff; }
                         100% { border-color: #ffffff; }
                     }
-
                     /* Apply the animation to input fields */
                     .animated-border {
                         animation: borderGlow 2s infinite ease-in-out;
@@ -90,7 +93,7 @@ const Login = () => {
                                     alt="Logo Dark of Track Progress"
                                     className=""
                                 />
-                                <p className="text-lg font-medium  transition-colors text-slate-50">TRACKPROGRESS</p>
+                                <p className="text-lg font-medium text-slate-50 transition-colors">TRACKPROGRESS</p>
                             </div>
                         </div>
                     </Link>
@@ -104,6 +107,7 @@ const Login = () => {
                         </div>
                         <div className="p-6 pt-0">
                             <div>
+                                {/* Email Input */}
                                 <div>
                                     <div>
                                         <div className="group relative rounded-lg border px-3 pb-1.5 pt-2.5 duration-200 focus-within:border-sky-200 focus-within:ring focus-within:ring-sky-300/30">
@@ -118,11 +122,16 @@ const Login = () => {
                                                 name="username"
                                                 placeholder="Username"
                                                 autoComplete="off"
-                                                className={`file:bg-accent placeholder:text-muted-foreground/90 text-foreground block w-full border-0 bg-transparent p-0 text-sm file:my-1 file:rounded-full file:border-0 file:px-4 file:py-2 file:font-medium focus:outline-none focus:ring-0 sm:leading-7 ${errors.emailRef ? "border-red-500 focus:border-red-500" : ""}`}
+                                                className={`file:bg-accent placeholder:text-muted-foreground/90 text-foreground block w-full border-0 bg-transparent p-0 text-sm file:my-1 file:rounded-full file:border-0 file:px-4 file:py-2 file:font-medium focus:outline-none focus:ring-0 sm:leading-7 ${
+                                                    errors.email ? "border-red-500 focus:border-red-500" : ""
+                                                }`}
                                             />
                                         </div>
+                                        {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
                                     </div>
                                 </div>
+
+                                {/* Password Input */}
                                 <div className="mt-4">
                                     <div>
                                         <div className="group relative rounded-lg border px-3 pb-1.5 pt-2.5 duration-200 focus-within:border-sky-200 focus-within:ring focus-within:ring-sky-300/30">
@@ -137,21 +146,23 @@ const Login = () => {
                                                     type="password"
                                                     name="password"
                                                     className={`placeholder:text-muted-foreground/90 text-foreground block w-full border-0 bg-transparent p-0 text-sm file:my-1 focus:outline-none focus:ring-0 focus:ring-teal-500 sm:leading-7 ${
-                                                        errors.passwordRef?"border-red-500 focus:border-red-500" : ""
+                                                        errors.password ? "border-red-500 focus:border-red-500" : ""
                                                     }`}
                                                 />
                                             </div>
                                         </div>
+                                        {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
                                     </div>
                                 </div>
-                                
+
+                                {/* Buttons */}
                                 <div className="mt-4 flex items-center justify-end gap-x-2">
-                                    <a
+                                    <Link to={"/signup"}
                                         className="hover:bg-accent inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 hover:ring hover:ring-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
                                         href="/register"
                                     >
                                         Register
-                                    </a>
+                                    </Link>
                                     <button
                                         type="submit"
                                         className="inline-flex h-10 items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-black transition duration-300 hover:bg-black hover:text-white hover:ring hover:ring-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"

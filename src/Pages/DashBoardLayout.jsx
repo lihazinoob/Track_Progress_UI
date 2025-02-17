@@ -15,11 +15,7 @@ const DashBoardLayout = () => {
 
     // logout function implemented here
     const handleLogOutFunctionality = () => {
-        // console.log("logging Out");
-      //   if (!token) {
-      //     console.error("No token found. Cannot log out.");
-      //     return;
-      // }
+        
         axiosClient
             .post(
                 "/logout",
@@ -35,7 +31,7 @@ const DashBoardLayout = () => {
                 setUser(null);
                 setToken(null);
                 localStorage.removeItem("token");
-                window.location.href = "/";
+                window.location.href = "/landing";
                 
             })
             .catch((error) => {
