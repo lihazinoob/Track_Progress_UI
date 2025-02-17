@@ -1,4 +1,4 @@
-import { Home, User, Newspaper, Cable, FileUser, UserRoundCog, Building2 } from "lucide-react";
+import { Home, User, Newspaper, Cable, FileUser, UserRoundCog, Building2,LogOut } from "lucide-react";
 
 export const SideBarLinks = [
     {
@@ -59,6 +59,12 @@ export const SideBarLinks = [
                 icon: Building2,
                 path: "/editbusinessprofile",
             },
+            {
+                label:"LogOut",
+                icon:LogOut,
+                path:"#",
+                isLogOut:true
+            }
         ],
     },
 ];

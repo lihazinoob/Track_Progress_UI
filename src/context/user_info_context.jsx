@@ -5,17 +5,14 @@ import axios from "axios";
 
 const UserInfoContext = React.createContext({
     user: null,
-    setUser: () => {},
     token: null,
+    setUser: () => {},
     setToken: () => {},
 });
 
 // Custom Hook to use UserInfoContext
 
 export const useUserInfoContext = () => React.useContext(UserInfoContext);
-
- 
-
 
 // Now create a context provider
 export default function UserInfoContextProvider({ children }) {
@@ -65,10 +62,5 @@ export default function UserInfoContextProvider({ children }) {
         }
     }, [token]);
 
-    return(
-      <UserInfoContext.Provider value = {{user,token,setUser,setToken}}>
-        {children}
-      </UserInfoContext.Provider>
-    );
-
-};
+    return <UserInfoContext.Provider value={{ user, token, setUser, setToken }}>{children}</UserInfoContext.Provider>;
+}

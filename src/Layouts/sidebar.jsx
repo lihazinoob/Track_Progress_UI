@@ -1,11 +1,12 @@
 import { forwardRef } from "react";
-import logoLight from "../assets/logo-light.svg"
-import logoDark from "../assets/logo-dark.svg"
+import logoLight from "../assets/logo-light.svg";
+import logoDark from "../assets/logo-dark.svg";
 import cn from "../utils/cn";
 import { SideBarLinks } from "../constants/SideBarIndex";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
-const SideBar = forwardRef(({ collapsed , isDesktopDeviceOpen }, ref) => {
+import { LogOut } from "lucide-react";
+const SideBar = forwardRef(({ collapsed, isDesktopDeviceOpen,handlelogout }, ref) => {
     return (
         <>
             <aside
@@ -29,7 +30,7 @@ const SideBar = forwardRef(({ collapsed , isDesktopDeviceOpen }, ref) => {
                     />
                     {!collapsed && <p className="text-lg font-medium text-slate-900 transition-colors dark:text-slate-50">TRACKPROGRESS</p>}
                 </div>
-                
+
                 <div className="flex w-full flex-col gap-y-4 overflow-y-auto overflow-x-hidden p-3 [scrollbar-width:_thin]">
                     {SideBarLinks.map((navbarLink) => (
                         <nav
@@ -42,6 +43,7 @@ const SideBar = forwardRef(({ collapsed , isDesktopDeviceOpen }, ref) => {
                                     key={link.label}
                                     to={link.path}
                                     className={cn("sidebar-item", collapsed && "md:w-[45px]")}
+                                    onClick={link.isLogOut ? handlelogout : undefined}
                                 >
                                     <link.icon
                                         size={22}
@@ -53,6 +55,7 @@ const SideBar = forwardRef(({ collapsed , isDesktopDeviceOpen }, ref) => {
                         </nav>
                     ))}
                 </div>
+                
             </aside>
         </>
     );
