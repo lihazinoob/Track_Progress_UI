@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import { useRef } from "react";
+import { useUserInfoContext } from "../context/user_info_context";
 import { Link } from "react-router-dom"; // Updated import for React Router v6+
 import logoLight from "../../src/assets/logo-dark.svg";
+import axiosClient from "../axios_client";
+import { SquareUser } from "lucide-react";
 
 const Login = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
+    // Using User Info Context to set TOKEN and USER
+    const {setUser,setToken} = useUserInfoContext();
+
+
     // Defining a error by STATE
     const [errors, setErrors] = useState({
         emailRef: "",
@@ -34,6 +41,26 @@ const Login = () => {
             passwordRef.current.focus();
             return;
         }
+
+        const loginCredentialData = 
+        {
+            email:emailValue,
+            password:passwordValue
+        }
+        
+        // Using axiosClient to send data from the client side to server side
+
+        axiosClient.post("/login",loginCredentialData).then((response) =>
+        {
+            console.log(response.data);           
+            setToken(response.data.token);
+            setUser(response.data.user);
+        }).catch((error) =>{
+            if(error.response)
+            {
+                console.log(error.response);
+            }
+        });
     };
 
     return (
@@ -63,7 +90,7 @@ const Login = () => {
                                     alt="Logo Dark of Track Progress"
                                     className=""
                                 />
-                                <p className="text-lg font-medium text-slate-900 transition-colors dark:text-slate-50">TRACKPROGRESS</p>
+                                <p className="text-lg font-medium  transition-colors text-slate-50">TRACKPROGRESS</p>
                             </div>
                         </div>
                     </Link>
@@ -117,22 +144,7 @@ const Login = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="mt-4 flex items-center justify-between">
-                                    <label className="flex items-center gap-2">
-                                        <input
-                                            type="checkbox"
-                                            name="remember"
-                                            className="outline-none focus:outline focus:outline-sky-300"
-                                        />
-                                        <span className="text-xs">Remember me</span>
-                                    </label>
-                                    <a
-                                        className="text-foreground text-sm font-medium underline"
-                                        href="/forgot-password"
-                                    >
-                                        Forgot password?
-                                    </a>
-                                </div>
+                                
                                 <div className="mt-4 flex items-center justify-end gap-x-2">
                                     <a
                                         className="hover:bg-accent inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 hover:ring hover:ring-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
